@@ -340,5 +340,98 @@ formattable(k_pool, align =c("c","c","c","c"), list(
   python= color_tile(customGreen0, customGreen),
   statistics= color_tile(customGreen0, customGreen)
 ))
+
+```{r key_word}
+key_word_1<- 
+full_df %>% 
+  filter (grepl('analysis',job_description, ignore.case = TRUE))%>%
+    mutate(analysis = 'analysis')%>%
+      count(analysis)
+
+key_word_2 <- 
+  full_df %>% 
+   filter (grepl('research',job_description, ignore.case = TRUE))%>%
+    mutate(research = 'research')%>%
+      count(research)
+
+key_word_3 <- 
+  full_df %>% 
+   filter (grepl('focus',job_description, ignore.case = TRUE))%>%
+    mutate(focus = 'focus')%>%
+      count(focus)
+
+key_word_4 <- 
+  full_df %>% 
+   filter (grepl('insight',job_description, ignore.case = TRUE))%>%
+    mutate(insight = 'insight')%>%
+      count(insight)
+
+key_word_5 <- 
+  full_df %>% 
+   filter (grepl('design',job_description, ignore.case = TRUE))%>%
+    mutate(design = 'design')%>%
+      count(design)
+
+key_word_6 <- 
+  full_df %>% 
+   filter (grepl('organization',job_description, ignore.case = TRUE))%>%
+    mutate(organization = 'organization')%>%
+      count(organization)
+
+key_word_7 <- 
+  full_df %>% 
+   filter (grepl('innovation',job_description, ignore.case = TRUE))%>%
+    mutate(innovation = 'innovation')%>%
+      count(innovation)
+
+key_word_8 <- 
+  full_df %>% 
+   filter (grepl('integrity',job_description, ignore.case = TRUE))%>%
+    mutate(integrity = 'integrity')%>%
+      count(integrity)
+
+key_word_9 <- 
+  full_df %>% 
+   filter (grepl('presentation',job_description, ignore.case = TRUE))%>%
+    mutate(presentation = 'presentation')%>%
+      count(presentation)
+
+key_word_10 <- 
+  full_df %>% 
+   filter (grepl('process improvement',job_description, ignore.case = TRUE))%>%
+    mutate(improvement = 'improvement')%>%
+      count(improvement)
+
+
+
+key_total <-  key_word_1 %>%
+  full_join(key_word_2, by = "n")%>%
+  full_join(key_word_3, by = "n")%>%
+  full_join(key_word_4, by = "n")%>%
+  full_join(key_word_5, by = "n")%>%
+  full_join(key_word_6, by = "n")%>%
+  full_join(key_word_7, by = "n")%>%
+  full_join(key_word_8, by = "n")%>%
+  full_join(key_word_9, by = "n")%>%
+  full_join(key_word_10, by = "n")%>%
+  rename (kword = analysis) %>%
+  mutate(kword = c('analysis','research', 'focus', 'insight', 'design', 'organization', 'innovation', 'integrity', 'presentation', 'process improvement'))%>%
+  select (kword, n)
+
+mean.n <- function(x){
+  return(c(y = median(x)*0.97, label = round(mean(x),2)))}
+
+ggplot(data=key_total, 
+       aes(x = reorder(kword, +n), y=n, fill=kword))+
+        geom_bar(stat = "identity")+
+        scale_fill_brewer(palette="Spectral")+
+        ggtitle(label = "Errors by Step Number")+
+        theme_minimal()+
+        theme(axis.text.x = element_text(angle = 90, hjust = 1, face = "bold"))+
+   stat_summary(fun.data = mean.n, geom = "text", fun.y = mean, colour = "black")+
+        xlab("Key Word")+ylab("Number of postings")
+
 ```
+
+
 
